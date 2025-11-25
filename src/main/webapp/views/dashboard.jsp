@@ -181,6 +181,20 @@
         .action-btn-warning {
             background: #f39c12;
         }
+        .btn-change {
+            padding: 8px 16px;
+            background: #2980b9;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background 0.3s;
+            margin-right: 8px;
+        }
+
+        .btn-change:hover {
+            background: #1f6a9a;
+        }
     </style>
 </head>
 <body>
@@ -194,6 +208,7 @@
                     ${sessionScope.role}
                 </span>
             </div>
+            <a href="${pageContext.request.contextPath}/change-password" class="btn-change">Change password</a>
             <a href="logout" class="btn-logout">Logout</a>
         </div>
     </div>

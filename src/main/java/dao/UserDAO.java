@@ -18,6 +18,9 @@ public class UserDAO {
     private static final String SQL_UPDATE_LAST_LOGIN = 
         "UPDATE users SET last_login = NOW() WHERE id = ?";
     
+    private static final String SQL_UPDATE_PASSWORD =
+        "UPDATE users SET password = ? WHERE id = ?";
+    
     private static final String SQL_GET_BY_ID = 
         "SELECT * FROM users WHERE id = ?";
     
@@ -151,6 +154,27 @@ public class UserDAO {
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;
             
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Update user's password (hashes the new password before storing)
+     */
+    public boolean updatePassword(int userId, String newPlainPassword) {
+        String hashedPassword = BCrypt.hashpw(newPlainPassword, BCrypt.gensalt());
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(SQL_UPDATE_PASSWORD)) {
+
+            pstmt.setString(1, hashedPassword);
+            pstmt.setInt(2, userId);
+
+            int rows = pstmt.executeUpdate();
+            return rows > 0;
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
